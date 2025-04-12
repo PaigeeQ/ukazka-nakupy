@@ -1,23 +1,17 @@
-const list = [
-  { name: 'Mléko', amount: '1 litr', bought: true },
-  { name: 'Rohlíky', amount: '10 ks', bought: false },
-  { name: 'Pivo Krušovice', amount: '2 ks', bought: false },
-  { name: 'Sýr Eidem', amount: '200 g', bought: true },
-  { name: 'Paštika', amount: '1 ks', bought: false },
-  { name: 'Máslo', amount: '250 g', bought: true },
-];
+import {list} from "./shoplist.js";
 
 const renderList = () => {
   const shoplistElement = document.querySelector('.shoplist');
-  shoplistElement.innerHTML = '';
-  list.forEach((item) => {
-    let tickClass = 'btn-tick';
+  shoplistElement.innerHTML = ''; //bude prázdný
+  list.forEach((item) => { // KDYŽ chci něco pro každou položku tady pro item, a vytvořitm fci pro html **
+    let tickClass = 'btn-tick'; //odškrtnuto ;  tick=zaškrnout
 
     if (item.bought) {
-      tickClass += ' btn-tick--on';
+      tickClass += ' btn-tick--on'; // zaškrtnuto
     }
 
-    shoplistElement.innerHTML += `
+    // ** přidaní tzn . tady pro html 
+    shoplistElement.innerHTML += `          
       <div class="shopitem">
         <button class="${tickClass}" class="shopitem__tick"></button>
         <div class="shopitem__name">${item.name}</div>
@@ -28,18 +22,18 @@ const renderList = () => {
   });
 
   const deleteButtons = document.querySelectorAll('.shopitem .btn-delete');
-  deleteButtons.forEach((button, index) => {
+  deleteButtons.forEach((button, index) => { // na každý button přidej 
     button.addEventListener('click', () => {
-      list.splice(index, 1);
+      list.splice(index, 1);    // uplně smaže, musím potom zase zavolat render, aby vyrobila list, ale už bez teto položky
       renderList();
     });
   });
 
   const tickButtons = document.querySelectorAll('.shopitem .btn-tick');
   tickButtons.forEach((button, index) => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', () => { 
       list[index].bought = !list[index].bought;
-      renderList();
+      renderList();     //tady zase přidam položky 
     });
   });
 };
@@ -48,17 +42,18 @@ const addBtn = document.querySelector('.btn-add');
 addBtn.addEventListener('click', (e) => {
   e.preventDefault();
 
-  const nameInput = document.querySelector('#input-name');
+  const nameInput = document.querySelector('#input-name');    
   const amountInput = document.querySelector('#input-amount');
-  const newItem = {
+  const newItem = {       //vytvoření noveho objektu, co chci dát do pole
     name: nameInput.value,
     amount: amountInput.value,
+    bought: false,
   };
-  list.push(newItem);
-  renderList();
+  list.push(newItem); // pushnu do seznamu
+  renderList();       // přerenderuju znova - vytvořím opět seznam 
 
-  nameInput.value = '';
-  amountInput.value = '';
+  nameInput.value = '';   //vymažu na to, aby mohly převzít nové hodnoty 
+  amountInput.value = '';  //vymažu na to, aby mohly převzít nové hodnoty 
 });
 
 renderList();
